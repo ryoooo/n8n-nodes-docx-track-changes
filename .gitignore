@@ -1,0 +1,11 @@
+# Claude Code local settings
+.claude/settings.local.json
+
+# Node.js (将来用)
+node_modules/
+dist/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
