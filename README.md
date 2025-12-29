@@ -18,20 +18,82 @@ Perfect for automating document review workflows, contract management, and appro
 - **Summary Statistics** - Get counts by type, author, and status
 - **AI Agent Compatible** - Use as a tool in AI workflows (`usableAsTool: true`)
 
+## Compatibility
+
+| Requirement | Version |
+|-------------|---------|
+| n8n | 1.0.0+ (tested on 2.2.0) |
+| Node.js | 18.17.0+ |
+
+> **Note:** This node uses external dependencies (`jszip`, `fast-xml-parser`) and is designed for **self-hosted n8n**. For n8n Cloud, only [verified community nodes](https://docs.n8n.io/integrations/community-nodes/installation/verified-install/) are supported.
+
 ## Installation
 
-### Community Nodes (Recommended)
+### Option 1: GUI Install (Recommended)
+
+The easiest way to install on self-hosted n8n:
 
 1. Go to **Settings** > **Community Nodes**
 2. Select **Install**
 3. Enter `n8n-nodes-docx-revisions`
-4. Agree to the risks and select **Install**
+4. Check "I understand the risks of installing unverified code from a public source"
+5. Select **Install**
 
-### Manual Installation
+> Only **Owner** and **Admin** users can install community nodes.
+
+### Option 2: Manual Install (npm)
+
+For n8n instances running in queue mode or when installing private packages:
 
 ```bash
-# In your n8n installation directory
+# Access your n8n container
+docker exec -it n8n sh
+
+# Create nodes directory and install
+mkdir -p ~/.n8n/nodes
+cd ~/.n8n/nodes
 npm install n8n-nodes-docx-revisions
+
+# Restart n8n to load the node
+```
+
+### Option 3: Docker (Dockerfile)
+
+For persistent installation in Docker deployments, create a custom Dockerfile:
+
+```dockerfile
+FROM n8nio/n8n:latest
+
+USER root
+RUN cd /usr/local/lib/node_modules/n8n && \
+    npm install n8n-nodes-docx-revisions
+USER node
+```
+
+Then update your `docker-compose.yml`:
+
+```yaml
+services:
+  n8n:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # ... rest of your configuration
+```
+
+Rebuild and restart:
+
+```bash
+docker compose down
+docker compose up -d --build
+```
+
+### Enabling AI Agent Tool Usage
+
+To use this node as an AI Agent tool, set the environment variable:
+
+```bash
+N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
 ```
 
 ## Operations
@@ -151,15 +213,6 @@ Track all contract changes in a spreadsheet for audit purposes.
 ```
 
 Automatically collect unresolved comments from shared documents.
-
-## Compatibility
-
-| Requirement | Version |
-|-------------|---------|
-| n8n | 2.0.0+ |
-| Node.js | 20.19.0 - 24.x |
-
-> **Note:** This node uses external dependencies (`jszip`, `fast-xml-parser`) and is designed for **self-hosted n8n**. It is not compatible with n8n Cloud's strict verification requirements.
 
 ## Development
 
