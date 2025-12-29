@@ -5,6 +5,7 @@ import type {
 	INodeTypeDescription,
 } from 'n8n-workflow';
 import { extractRevisions } from './operations/extractRevisions';
+import { extractComments } from './operations/extractComments';
 
 export class DocxRevisions implements INodeType {
 	description: INodeTypeDescription = {
@@ -132,17 +133,8 @@ export class DocxRevisions implements INodeType {
 					const result = await extractRevisions.call(this, i);
 					returnData.push(result);
 				} else if (operation === 'extractComments') {
-					// TODO: Implement in extractComments.ts
-					returnData.push({
-						json: {
-							comments: [],
-							summary: {
-								totalComments: 0,
-								resolvedComments: 0,
-								unresolvedComments: 0,
-							},
-						},
-					});
+					const result = await extractComments.call(this, i);
+					returnData.push(result);
 				}
 			} catch (error) {
 				if (this.continueOnFail()) {

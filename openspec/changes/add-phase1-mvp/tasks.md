@@ -8,9 +8,9 @@
 
 ## 2. 共通ユーティリティ
 
-- [ ] 2.1 docxParser.ts: ZIP解凍・XMLファイル取得
-- [ ] 2.2 revisionParser.ts: `<w:ins>`, `<w:del>`要素のパース
-- [ ] 2.3 commentParser.ts: comments.xml, commentsExtended.xmlのパース
+- [x] 2.1 docxParser.ts: ZIP解凍・XMLファイル取得
+- [x] 2.2 revisionParser.ts: `<w:ins>`, `<w:del>`要素のパース
+- [x] 2.3 commentParser.ts: comments.xml, commentsExtended.xmlのパース
 
 ## 3. Extract Revisions実装
 
@@ -22,11 +22,11 @@
 
 ## 4. Extract Comments実装
 
-- [ ] 4.1 extractComments.ts: オペレーション実装
-- [ ] 4.2 コメント本体の抽出
-- [ ] 4.3 返信コメントの抽出（commentsExtended.xml）
-- [ ] 4.4 解決状態の取得
-- [ ] 4.5 サマリーの生成
+- [x] 4.1 extractComments.ts: オペレーション実装
+- [x] 4.2 コメント本体の抽出
+- [x] 4.3 返信コメントの抽出（commentsExtended.xml）
+- [x] 4.4 解決状態の取得
+- [x] 4.5 サマリーの生成
 
 ## 5. メインノード統合
 
