@@ -1,8 +1,9 @@
 # Claude Code local settings
 .claude/settings.local.json
 
-# Node.js (将来用)
+# Node.js
 node_modules/
+.pnpm-store/
 dist/
 *.log
 
