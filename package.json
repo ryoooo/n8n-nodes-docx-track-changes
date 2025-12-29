@@ -1,66 +1,52 @@
 {
-	"name": "n8n-nodes-docx-revisions",
-	"version": "0.1.0",
-	"description": "n8n community node for extracting revisions (track changes) and comments from Microsoft Word (.docx) documents",
-	"license": "MIT",
-	"homepage": "https://github.com/your-org/n8n-nodes-docx-revisions",
-	"keywords": [
-		"n8n-community-node-package",
-		"n8n",
-		"docx",
-		"word",
-		"track-changes",
-		"revisions",
-		"comments"
-	],
-	"author": {
-		"name": "ryoooo",
-		"email": "maekwnnn@gmail.com"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/your-org/n8n-nodes-docx-revisions.git"
-	},
-	"engines": {
-		"node": ">=20.19.0 <25"
-	},
-	"scripts": {
-		"build": "n8n-node build",
-		"build:watch": "tsc --watch",
-		"dev": "n8n-node dev",
-		"lint": "n8n-node lint",
-		"lint:fix": "n8n-node lint --fix",
-		"release": "n8n-node release",
-		"prepublishOnly": "n8n-node prerelease",
-		"test": "vitest",
-		"test:run": "vitest run"
-	},
-	"files": [
-		"dist"
-	],
-	"n8n": {
-		"n8nNodesApiVersion": 1,
-		"strict": true,
-		"credentials": [],
-		"nodes": [
-			"dist/nodes/DocxRevisions/DocxRevisions.node.js"
-		]
-	},
-	"devDependencies": {
-		"@n8n/node-cli": "*",
-		"@types/node": "^22.0.0",
-		"@vitest/coverage-v8": "^3.2.4",
-		"eslint": "^9.0.0",
-		"prettier": "^3.0.0",
-		"release-it": "^19.0.0",
-		"typescript": "^5.0.0",
-		"vitest": "^3.0.0"
-	},
-	"peerDependencies": {
-		"n8n-workflow": "*"
-	},
-	"dependencies": {
-		"fast-xml-parser": "^4.3.0",
-		"jszip": "^3.10.1"
-	}
+  "name": "n8n-nodes-docx-revisions",
+  "version": "0.1.0",
+  "description": "n8n community node for extracting revisions (track changes) and comments from Microsoft Word (.docx) documents",
+  "license": "MIT",
+  "homepage": "https://github.com/your-org/n8n-nodes-docx-revisions",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "docx",
+    "word",
+    "track-changes",
+    "revisions",
+    "comments"
+  ],
+  "author": { "name": "ryoooo", "email": "maekwnnn@gmail.com" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/n8n-nodes-docx-revisions.git"
+  },
+  "engines": { "node": ">=20.19.0 <25" },
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "files": ["dist"],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": false,
+    "credentials": [],
+    "nodes": ["dist/nodes/DocxRevisions/DocxRevisions.node.js"]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "*",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "release-it": "^19.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.0.0"
+  },
+  "peerDependencies": { "n8n-workflow": "*" },
+  "dependencies": { "fast-xml-parser": "^4.3.0", "jszip": "^3.10.1" }
 }

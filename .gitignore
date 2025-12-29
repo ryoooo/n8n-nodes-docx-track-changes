@@ -1,13 +1,60 @@
-# Claude Code local settings
-.claude/settings.local.json
-
-# Node.js
+# Dependencies
 node_modules/
 .pnpm-store/
-dist/
-coverage/
-*.log
 
-# OS
+# Build output
+dist/
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# n8n local data
+.n8n/
+
+# Claude Code
+.claude/settings.local.json
+
+# MCP configuration (local/personal)
+.mcp.json
+
+# Debug logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+
+# OS files
 .DS_Store
 Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Lock files from other package managers (we use pnpm)
+yarn.lock
+package-lock.json
+
+# Optional: npm package files
+*.tgz

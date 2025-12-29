@@ -21,6 +21,7 @@ export class DocxRevisions implements INodeType {
 		},
 		inputs: ['main'],
 		outputs: ['main'],
+		usableAsTool: true,
 		properties: [
 			{
 				displayName: 'Operation',

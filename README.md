@@ -1,20 +1,28 @@
 # n8n-nodes-docx-revisions
 
-n8n community node for extracting revisions (track changes) and comments from Microsoft Word (.docx) documents.
+![n8n.io - Workflow Automation](https://img.shields.io/badge/n8n-community%20node-ff6d5a)
+![npm](https://img.shields.io/npm/v/n8n-nodes-docx-revisions)
+![License](https://img.shields.io/npm/l/n8n-nodes-docx-revisions)
+
+This is an n8n community node that extracts **revisions (track changes)** and **comments** from Microsoft Word (.docx) documents.
+
+Perfect for automating document review workflows, contract management, and approval processes.
+
+[n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
 
 ## Features
 
-- **Extract Revisions**: Extract tracked changes (insertions and deletions) from DOCX files
-- **Extract Comments**: Extract comments and replies from DOCX files
-- Support for multiple authors
-- Context extraction for revisions
-- Summary statistics
+- **Extract Revisions** - Get all tracked changes (insertions and deletions) with author and timestamp
+- **Extract Comments** - Get all comments with replies, resolution status, and target text
+- **Context Support** - Include surrounding text for each revision
+- **Summary Statistics** - Get counts by type, author, and status
+- **AI Agent Compatible** - Use as a tool in AI workflows (`usableAsTool: true`)
 
 ## Installation
 
 ### Community Nodes (Recommended)
 
-1. Go to **Settings > Community Nodes**
+1. Go to **Settings** > **Community Nodes**
 2. Select **Install**
 3. Enter `n8n-nodes-docx-revisions`
 4. Agree to the risks and select **Install**
@@ -22,6 +30,7 @@ n8n community node for extracting revisions (track changes) and comments from Mi
 ### Manual Installation
 
 ```bash
+# In your n8n installation directory
 npm install n8n-nodes-docx-revisions
 ```
 
@@ -29,34 +38,45 @@ npm install n8n-nodes-docx-revisions
 
 ### Extract Revisions
 
-Extracts tracked changes from a DOCX file.
+Extracts tracked changes (insertions and deletions) from a DOCX file.
 
-**Options:**
-- **Include Context**: Include surrounding text for each revision
-- **Context Length**: Number of characters to include before/after
-- **Include Summary**: Include revision statistics
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| Input Binary Field | string | `data` | Binary property containing the DOCX file |
+| Include Context | boolean | `false` | Include surrounding text for each revision |
+| Context Length | number | `50` | Characters to include before/after |
+| Include Summary | boolean | `true` | Include revision statistics |
 
-**Output:**
+**Output Example:**
+
 ```json
 {
   "revisions": [
     {
       "type": "insert",
-      "text": "added text",
-      "author": "John Doe",
-      "date": "2024-01-15T10:30:00Z",
+      "text": "新しい条項",
+      "author": "田中 太郎",
+      "date": "2025-01-15T10:30:00Z",
       "paragraphIndex": 5,
       "context": {
-        "before": "text before",
-        "after": "text after"
+        "before": "契約書の",
+        "after": "について"
       }
+    },
+    {
+      "type": "delete",
+      "text": "旧条項",
+      "author": "田中 太郎",
+      "date": "2025-01-15T10:31:00Z",
+      "paragraphIndex": 5,
+      "context": null
     }
   ],
   "summary": {
-    "totalRevisions": 10,
-    "insertions": 7,
+    "totalRevisions": 15,
+    "insertions": 12,
     "deletions": 3,
-    "authors": ["John Doe", "Jane Smith"]
+    "authors": ["田中 太郎", "鈴木 花子"]
   }
 }
 ```
@@ -65,27 +85,30 @@ Extracts tracked changes from a DOCX file.
 
 Extracts comments and replies from a DOCX file.
 
-**Options:**
-- **Include Resolved**: Include resolved comments
-- **Include Summary**: Include comment statistics
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| Input Binary Field | string | `data` | Binary property containing the DOCX file |
+| Include Resolved | boolean | `true` | Include resolved comments |
+| Include Summary | boolean | `true` | Include comment statistics |
 
-**Output:**
+**Output Example:**
+
 ```json
 {
   "comments": [
     {
       "id": "1",
-      "author": "John Doe",
-      "date": "2024-01-15T10:30:00Z",
-      "text": "Please review this section",
-      "targetText": "The commented text",
+      "author": "田中 太郎",
+      "date": "2025-01-15T10:30:00Z",
+      "text": "この部分を確認してください",
+      "targetText": "契約期間は1年間とする",
       "resolved": false,
       "replies": [
         {
           "id": "2",
-          "author": "Jane Smith",
-          "date": "2024-01-15T11:00:00Z",
-          "text": "Looks good to me"
+          "author": "鈴木 花子",
+          "date": "2025-01-15T11:00:00Z",
+          "text": "確認しました。問題ありません。"
         }
       ]
     }
@@ -95,23 +118,73 @@ Extracts comments and replies from a DOCX file.
     "totalReplies": 3,
     "resolved": 2,
     "unresolved": 3,
-    "authors": ["John Doe", "Jane Smith"]
+    "authors": ["田中 太郎", "鈴木 花子"]
   }
 }
 ```
 
-## Usage Example
+## Usage Examples
 
-1. Add a **Read Binary File** node or any node that outputs binary data
-2. Connect to the **DOCX Revisions** node
-3. Select the operation (Extract Revisions or Extract Comments)
-4. Configure options as needed
-5. Execute the workflow
+### Basic Workflow
+
+```
+[Read Binary File] → [DOCX Revisions] → [IF] → [Slack/Email]
+```
+
+1. **Read Binary File** - Load the DOCX file
+2. **DOCX Revisions** - Extract revisions or comments
+3. **IF** - Check if there are unresolved items
+4. **Slack/Email** - Notify reviewers
+
+### Contract Review Automation
+
+```
+[Webhook] → [DOCX Revisions (Extract Revisions)] → [Code] → [Google Sheets]
+```
+
+Track all contract changes in a spreadsheet for audit purposes.
+
+### Comment Aggregation
+
+```
+[Google Drive Trigger] → [DOCX Revisions (Extract Comments)] → [Filter] → [Notion]
+```
+
+Automatically collect unresolved comments from shared documents.
 
 ## Compatibility
 
-- n8n version: 1.0.0+
-- Node.js: 20.x or later
+| Requirement | Version |
+|-------------|---------|
+| n8n | 2.0.0+ |
+| Node.js | 20.19.0 - 24.x |
+
+> **Note:** This node uses external dependencies (`jszip`, `fast-xml-parser`) and is designed for **self-hosted n8n**. It is not compatible with n8n Cloud's strict verification requirements.
+
+## Development
+
+```bash
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+
+# Run tests
+pnpm test
+
+# Build for production
+pnpm build
+
+# Lint code
+pnpm lint
+```
+
+## Resources
+
+- [n8n Community Nodes Documentation](https://docs.n8n.io/integrations/community-nodes/)
+- [Creating n8n Nodes](https://docs.n8n.io/integrations/creating-nodes/)
+- [OpenXML Track Changes Specification](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.insertedrun)
 
 ## License
 
@@ -119,9 +192,8 @@ Extracts comments and replies from a DOCX file.
 
 ## Author
 
-Your Name
+**ryoooo** - [@maekwnnn](mailto:maekwnnn@gmail.com)
 
-## Links
+---
 
-- [n8n Community Nodes Documentation](https://docs.n8n.io/integrations/community-nodes/)
-- [GitHub Repository](https://github.com/your-org/n8n-nodes-docx-revisions)
+Made with ❤️ for the n8n community
