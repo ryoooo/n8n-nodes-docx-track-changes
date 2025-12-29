@@ -20,7 +20,9 @@ coverage/
 .n8n/
 
 # Claude Code
-.claude/settings.local.json
+.claude/
+
+
 
 # MCP configuration (local/personal)
 .mcp.json
