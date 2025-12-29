@@ -36,7 +36,7 @@
 
 ## 6. テスト・検証
 
-- [ ] 6.1 テスト用docxファイルの作成（履歴・コメント付き）
+- [x] 6.1 テスト用docxファイルの作成（履歴・コメント付き） → `sample/nda-meti 2.docx`
 - [ ] 6.2 Extract Revisionsのユニットテスト
 - [ ] 6.3 Extract Commentsのユニットテスト
 - [ ] 6.4 n8n上での動作確認
