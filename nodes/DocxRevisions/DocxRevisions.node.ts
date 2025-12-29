@@ -4,6 +4,7 @@ import type {
 	INodeType,
 	INodeTypeDescription,
 } from 'n8n-workflow';
+import { extractRevisions } from './operations/extractRevisions';
 
 export class DocxRevisions implements INodeType {
 	description: INodeTypeDescription = {
@@ -69,6 +70,18 @@ export class DocxRevisions implements INodeType {
 						description: 'Whether to include surrounding text for each revision',
 					},
 					{
+						displayName: 'Context Length',
+						name: 'contextLength',
+						type: 'number',
+						default: 50,
+						description: 'Number of characters to include before and after each revision',
+						displayOptions: {
+							show: {
+								includeContext: [true],
+							},
+						},
+					},
+					{
 						displayName: 'Include Summary',
 						name: 'includeSummary',
 						type: 'boolean',
@@ -116,17 +129,8 @@ export class DocxRevisions implements INodeType {
 		for (let i = 0; i < items.length; i++) {
 			try {
 				if (operation === 'extractRevisions') {
-					// TODO: Implement in extractRevisions.ts
-					returnData.push({
-						json: {
-							revisions: [],
-							summary: {
-								totalRevisions: 0,
-								insertions: 0,
-								deletions: 0,
-							},
-						},
-					});
+					const result = await extractRevisions.call(this, i);
+					returnData.push(result);
 				} else if (operation === 'extractComments') {
 					// TODO: Implement in extractComments.ts
 					returnData.push({

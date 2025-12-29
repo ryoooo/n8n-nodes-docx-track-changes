@@ -75,12 +75,6 @@ function extractTextFromElement(element: unknown): string {
 	return getElementText(element);
 }
 
-function getAttributeValue(element: XmlElement, attrName: string): string {
-	const attrs = element[':@'];
-	if (!attrs) return '';
-	return attrs[`@_w:${attrName}`] || attrs[`@_${attrName}`] || '';
-}
-
 export function parseRevisions(documentXml: string, options: ParseRevisionOptions = {}): Revision[] {
 	const { includeContext = false, contextLength = 50 } = options;
 	const revisions: Revision[] = [];

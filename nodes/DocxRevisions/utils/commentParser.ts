@@ -30,11 +30,6 @@ export interface ParseCommentOptions {
 	includeResolved?: boolean;
 }
 
-interface CommentRangeInfo {
-	startOffset: number;
-	endOffset: number;
-}
-
 const parser = new XMLParser({
 	ignoreAttributes: false,
 	attributeNamePrefix: '@_',
