@@ -2,9 +2,9 @@
 
 ## 1. プロジェクトセットアップ
 
-- [ ] 1.1 n8nノードプロジェクトを初期化（Node.js 22, pnpm, n8n 2.2.0対応）
-- [ ] 1.2 依存パッケージをインストール（jszip, fast-xml-parser）
-- [ ] 1.3 ノードメタデータを作成（DocxRevisions.node.json）
+- [x] 1.1 n8nノードプロジェクトを初期化（Node.js 22, pnpm, n8n 2.2.0対応）
+- [x] 1.2 依存パッケージをインストール（jszip, fast-xml-parser）
+- [x] 1.3 ノードメタデータを作成（DocxRevisions.node.json）
 
 ## 2. 共通ユーティリティ
 

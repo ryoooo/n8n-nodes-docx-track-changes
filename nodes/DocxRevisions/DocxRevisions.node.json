@@ -1,0 +1,13 @@
+{
+	"node": "n8n-nodes-docx-revisions.docxRevisions",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Data & Storage", "Productivity"],
+	"resources": {
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/your-org/n8n-nodes-docx-revisions#readme"
+			}
+		]
+	}
+}
