@@ -43,6 +43,6 @@
 
 ## 7. npm公開準備
 
-- [ ] 7.1 README.md作成
-- [ ] 7.2 LICENSE追加
-- [ ] 7.3 npm publish
+- [x] 7.1 README.md作成
+- [x] 7.2 LICENSE追加
+- [ ] 7.3 npm publish（アカウント作成後に実行）
