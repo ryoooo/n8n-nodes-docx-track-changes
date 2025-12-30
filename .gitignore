@@ -22,6 +22,7 @@ coverage/
 # Claude Code
 .claude/
 CLAUDE.md
+AGENTS.md
 openspec/
 
 # Sample files
