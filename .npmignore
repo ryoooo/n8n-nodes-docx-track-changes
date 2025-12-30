@@ -1,0 +1,81 @@
+# Source files (TypeScript)
+nodes/
+*.ts
+!*.d.ts
+
+# Test files
+*.test.js
+*.test.d.ts
+*.test.js.map
+**/*.test.*
+integration.test.*
+
+# Build artifacts
+*.tsbuildinfo
+dist/*.tsbuildinfo
+dist/**/*.tsbuildinfo
+coverage/
+
+# Dependencies (automatically excluded, but explicit)
+node_modules/
+.pnpm-store/
+
+# n8n local data
+.n8n/
+
+# Development
+.devcontainer/
+.claude/
+.vscode/
+.idea/
+
+# Config files
+vitest.config.ts
+tsconfig.json
+eslint.config.mjs
+
+# Documentation (keep README files)
+CLAUDE.md
+AGENTS.md
+openspec/
+
+# Environment variables
+.env
+.env.local
+.env.*
+
+# Local/personal files
+.mcp.json
+sample/
+
+# Debug logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE / Editor
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Lock files (not needed in published package)
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Package files
+*.tgz
