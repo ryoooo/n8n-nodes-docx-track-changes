@@ -1,5 +1,5 @@
 {
-  "name": "n8n-nodes-docx-revisions",
+  "name": "n8n-nodes-docx-track-changes",
   "version": "0.1.0",
   "description": "n8n community node for extracting revisions (track changes) and comments from Microsoft Word (.docx) documents",
   "license": "MIT",

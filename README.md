@@ -1,8 +1,8 @@
-# n8n-nodes-docx-revisions
+# n8n-nodes-docx-track-changes
 
 ![n8n.io - Workflow Automation](https://img.shields.io/badge/n8n-community%20node-ff6d5a)
-![npm](https://img.shields.io/npm/v/n8n-nodes-docx-revisions)
-![License](https://img.shields.io/npm/l/n8n-nodes-docx-revisions)
+![npm](https://img.shields.io/npm/v/n8n-nodes-docx-track-changes)
+![License](https://img.shields.io/npm/l/n8n-nodes-docx-track-changes)
 
 This is an n8n community node that extracts **revisions (track changes)** and **comments** from Microsoft Word (.docx) documents.
 
@@ -35,7 +35,7 @@ The easiest way to install on self-hosted n8n:
 
 1. Go to **Settings** > **Community Nodes**
 2. Select **Install**
-3. Enter `n8n-nodes-docx-revisions`
+3. Enter `n8n-nodes-docx-track-changes`
 4. Check "I understand the risks of installing unverified code from a public source"
 5. Select **Install**
 
@@ -52,7 +52,7 @@ docker exec -it n8n sh
 # Create nodes directory and install
 mkdir -p ~/.n8n/nodes
 cd ~/.n8n/nodes
-npm install n8n-nodes-docx-revisions
+npm install n8n-nodes-docx-track-changes
 
 # Restart n8n to load the node
 ```
@@ -66,7 +66,7 @@ FROM n8nio/n8n:latest
 
 USER root
 RUN cd /usr/local/lib/node_modules/n8n && \
-    npm install n8n-nodes-docx-revisions
+    npm install n8n-nodes-docx-track-changes
 USER node
 ```
 
@@ -245,7 +245,7 @@ pnpm lint
 
 ## Author
 
-**ryoooo** - [@maekwnnn](mailto:maekwnnn@gmail.com)
+**ryoooo** 
 
 ---
 
