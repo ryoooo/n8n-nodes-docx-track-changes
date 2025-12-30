@@ -6,6 +6,9 @@ import type {
 } from 'n8n-workflow';
 import { extractRevisions } from './operations/extractRevisions';
 import { extractComments } from './operations/extractComments';
+import { acceptRevisionsOperation } from './operations/acceptRevisions';
+import { rejectRevisionsOperation } from './operations/rejectRevisions';
+import { getStatsOperation } from './operations/getStats';
 
 export class DocxRevisions implements INodeType {
 	description: INodeTypeDescription = {
@@ -30,16 +33,34 @@ export class DocxRevisions implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
-						name: 'Extract Revisions',
-						value: 'extractRevisions',
-						description: 'Extract tracked changes (insertions and deletions) from a DOCX file',
-						action: 'Extract revisions from DOCX',
+						name: 'Accept Revisions',
+						value: 'acceptRevisions',
+						description: 'Accept tracked changes by ID or accept all',
+						action: 'Accept revisions in DOCX',
 					},
 					{
 						name: 'Extract Comments',
 						value: 'extractComments',
 						description: 'Extract comments and replies from a DOCX file',
 						action: 'Extract comments from DOCX',
+					},
+					{
+						name: 'Extract Revisions',
+						value: 'extractRevisions',
+						description: 'Extract tracked changes (insertions and deletions) from a DOCX file',
+						action: 'Extract revisions from DOCX',
+					},
+					{
+						name: 'Get Stats',
+						value: 'getStats',
+						description: 'Get revision and comment statistics from a DOCX file',
+						action: 'Get stats from DOCX',
+					},
+					{
+						name: 'Reject Revisions',
+						value: 'rejectRevisions',
+						description: 'Reject tracked changes by ID or reject all',
+						action: 'Reject revisions in DOCX',
 					},
 				],
 				default: 'extractRevisions',
@@ -120,6 +141,101 @@ export class DocxRevisions implements INodeType {
 					},
 				],
 			},
+			// Accept Revisions parameters
+			{
+				displayName: 'Accept All',
+				name: 'acceptAll',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to accept all revisions instead of specific IDs',
+				displayOptions: {
+					show: {
+						operation: ['acceptRevisions'],
+					},
+				},
+			},
+			{
+				displayName: 'Revision IDs',
+				name: 'revisionIds',
+				type: 'string',
+				typeOptions: {
+					multipleValues: true,
+				},
+				default: [],
+				description: 'IDs of revisions to accept (from Extract Revisions output)',
+				displayOptions: {
+					show: {
+						operation: ['acceptRevisions'],
+						acceptAll: [false],
+					},
+				},
+			},
+			{
+				displayName: 'Output Binary Field',
+				name: 'outputPropertyName',
+				type: 'string',
+				default: 'data',
+				description: 'Name of the binary property for the modified DOCX file',
+				displayOptions: {
+					show: {
+						operation: ['acceptRevisions'],
+					},
+				},
+			},
+			// Reject Revisions parameters
+			{
+				displayName: 'Reject All',
+				name: 'rejectAll',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to reject all revisions instead of specific IDs',
+				displayOptions: {
+					show: {
+						operation: ['rejectRevisions'],
+					},
+				},
+			},
+			{
+				displayName: 'Revision IDs',
+				name: 'revisionIds',
+				type: 'string',
+				typeOptions: {
+					multipleValues: true,
+				},
+				default: [],
+				description: 'IDs of revisions to reject (from Extract Revisions output)',
+				displayOptions: {
+					show: {
+						operation: ['rejectRevisions'],
+						rejectAll: [false],
+					},
+				},
+			},
+			{
+				displayName: 'Output Binary Field',
+				name: 'outputPropertyName',
+				type: 'string',
+				default: 'data',
+				description: 'Name of the binary property for the modified DOCX file',
+				displayOptions: {
+					show: {
+						operation: ['rejectRevisions'],
+					},
+				},
+			},
+			// Get Stats parameters
+			{
+				displayName: 'Include Author Breakdown',
+				name: 'includeAuthorBreakdown',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to include per-author statistics breakdown',
+				displayOptions: {
+					show: {
+						operation: ['getStats'],
+					},
+				},
+			},
 		],
 	};
 
@@ -135,6 +251,15 @@ export class DocxRevisions implements INodeType {
 					returnData.push(result);
 				} else if (operation === 'extractComments') {
 					const result = await extractComments.call(this, i);
+					returnData.push(result);
+				} else if (operation === 'acceptRevisions') {
+					const result = await acceptRevisionsOperation.call(this, i);
+					returnData.push(result);
+				} else if (operation === 'rejectRevisions') {
+					const result = await rejectRevisionsOperation.call(this, i);
+					returnData.push(result);
+				} else if (operation === 'getStats') {
+					const result = await getStatsOperation.call(this, i);
 					returnData.push(result);
 				}
 			} catch (error) {
