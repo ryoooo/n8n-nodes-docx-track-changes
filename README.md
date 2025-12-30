@@ -109,6 +109,11 @@ Extracts tracked changes (insertions and deletions) from a DOCX file.
 | Context Length | number | `50` | Characters to include before/after |
 | Include Summary | boolean | `true` | Include revision statistics |
 
+> **Note:** Set "Input Binary Field" to match the binary output property name from the previous node:
+> - **Read Binary File** → default is `data`
+> - **HTTP Request** → default is `data`
+> - **Form Trigger** → use the `fieldName` you configured
+
 **Output Example:**
 
 ```json

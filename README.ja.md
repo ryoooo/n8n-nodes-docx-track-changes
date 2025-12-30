@@ -109,6 +109,11 @@ DOCXファイルから変更履歴（追加・削除）を抽出します。
 | Context Length | number | `50` | 前後に含める文字数 |
 | Include Summary | boolean | `true` | 変更統計を含める |
 
+> **注意:** 「Input Binary Field」は前のノードのバイナリ出力プロパティ名に合わせて設定してください：
+> - **Read Binary File** → デフォルトは `data`
+> - **HTTP Request** → デフォルトは `data`
+> - **Form Trigger** → 設定した `fieldName` の値
+
 **出力例:**
 
 ```json
