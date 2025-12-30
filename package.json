@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-docx-track-changes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "n8n community node for extracting revisions (track changes) and comments from Microsoft Word (.docx) documents",
   "license": "MIT",
   "homepage": "https://github.com/ryoooo/n8n-nodes-docx-track-changes",
@@ -13,12 +13,17 @@
     "revisions",
     "comments"
   ],
-  "author": { "name": "ryoooo", "email": "maekwnnn@gmail.com" },
+  "author": {
+    "name": "ryoooo",
+    "email": "maekwnnn@gmail.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ryoooo/n8n-nodes-docx-track-changes.git"
   },
-  "engines": { "node": ">=20.19.0 <25" },
+  "engines": {
+    "node": ">=20.19.0 <25"
+  },
   "scripts": {
     "build": "n8n-node build",
     "build:watch": "tsc --watch",
@@ -30,12 +35,16 @@
     "test": "vitest",
     "test:run": "vitest run"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "n8n": {
     "n8nNodesApiVersion": 1,
     "strict": false,
     "credentials": [],
-    "nodes": ["dist/nodes/DocxRevisions/DocxRevisions.node.js"]
+    "nodes": [
+      "dist/nodes/DocxRevisions/DocxRevisions.node.js"
+    ]
   },
   "devDependencies": {
     "@n8n/node-cli": "*",
@@ -47,6 +56,11 @@
     "typescript": "^5.0.0",
     "vitest": "^3.0.0"
   },
-  "peerDependencies": { "n8n-workflow": "*" },
-  "dependencies": { "fast-xml-parser": "^4.3.0", "jszip": "^3.10.1" }
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.3.0",
+    "jszip": "^3.10.1"
+  }
 }
