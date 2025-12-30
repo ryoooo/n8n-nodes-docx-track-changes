@@ -149,4 +149,74 @@ describe('revisionOperator', () => {
 			expect(result.xml).toContain(' text with spaces ');
 		});
 	});
+
+	describe('self-closing tags', () => {
+		it('should accept self-closing w:ins tag by removing it', () => {
+			const xml = `<w:p><w:ins w:author="Test" w:date="2025-11-24T06:32:05.383Z" w:id="1403436089" /><w:r><w:t>text</w:t></w:r></w:p>`;
+			const result = acceptRevision(xml, '1403436089');
+
+			expect(result.xml).toBe('<w:p><w:r><w:t>text</w:t></w:r></w:p>');
+			expect(result.processedIds).toContain('1403436089');
+			expect(result.warningIds).toHaveLength(0);
+		});
+
+		it('should accept self-closing w:del tag by removing it', () => {
+			const xml = `<w:p><w:del w:author="Test" w:id="123" /><w:r><w:t>text</w:t></w:r></w:p>`;
+			const result = acceptRevision(xml, '123');
+
+			expect(result.xml).toBe('<w:p><w:r><w:t>text</w:t></w:r></w:p>');
+			expect(result.processedIds).toContain('123');
+		});
+
+		it('should reject self-closing w:ins tag by removing it', () => {
+			const xml = `<w:p><w:ins w:author="Test" w:id="456" /><w:r><w:t>text</w:t></w:r></w:p>`;
+			const result = rejectRevision(xml, '456');
+
+			expect(result.xml).toBe('<w:p><w:r><w:t>text</w:t></w:r></w:p>');
+			expect(result.processedIds).toContain('456');
+		});
+
+		it('should reject self-closing w:del tag by removing it', () => {
+			const xml = `<w:p><w:del w:author="Test" w:id="789" /><w:r><w:t>text</w:t></w:r></w:p>`;
+			const result = rejectRevision(xml, '789');
+
+			expect(result.xml).toBe('<w:p><w:r><w:t>text</w:t></w:r></w:p>');
+			expect(result.processedIds).toContain('789');
+		});
+
+		it('should handle mixed self-closing and regular tags in acceptAll', () => {
+			const xml = `<w:p>
+				<w:ins w:id="1" w:author="Test" />
+				<w:ins w:id="2" w:author="Test"><w:r><w:t>inserted</w:t></w:r></w:ins>
+				<w:del w:id="3" w:author="Test" />
+			</w:p>`;
+
+			const result = acceptAllRevisions(xml);
+
+			expect(result.xml).not.toContain('w:ins');
+			expect(result.xml).not.toContain('w:del');
+			expect(result.xml).toContain('<w:r><w:t>inserted</w:t></w:r>');
+			expect(result.processedIds).toContain('1');
+			expect(result.processedIds).toContain('2');
+			expect(result.processedIds).toContain('3');
+		});
+
+		it('should handle mixed self-closing and regular tags in rejectAll', () => {
+			const xml = `<w:p>
+				<w:ins w:id="1" w:author="Test" />
+				<w:ins w:id="2" w:author="Test"><w:r><w:t>inserted</w:t></w:r></w:ins>
+				<w:del w:id="3" w:author="Test"><w:r><w:delText>deleted</w:delText></w:r></w:del>
+			</w:p>`;
+
+			const result = rejectAllRevisions(xml);
+
+			expect(result.xml).not.toContain('w:ins');
+			expect(result.xml).not.toContain('w:del');
+			expect(result.xml).not.toContain('inserted');
+			expect(result.xml).toContain('<w:t>deleted</w:t>');
+			expect(result.processedIds).toContain('1');
+			expect(result.processedIds).toContain('2');
+			expect(result.processedIds).toContain('3');
+		});
+	});
 });
