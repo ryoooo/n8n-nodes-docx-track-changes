@@ -2,6 +2,7 @@ import { XMLParser } from 'fast-xml-parser';
 import { extractTextFromXml } from './docxParser';
 
 export interface Revision {
+	id: string;
 	type: 'insert' | 'delete';
 	text: string;
 	author: string;
@@ -181,6 +182,7 @@ function processElement(
 
 		if (text) {
 			const revision: Revision = {
+				id: attrs?.['@_w:id'] || '',
 				type: 'insert',
 				text,
 				author: attrs?.['@_w:author'] || 'Unknown',
@@ -199,6 +201,7 @@ function processElement(
 
 		if (text) {
 			const revision: Revision = {
+				id: attrs?.['@_w:id'] || '',
 				type: 'delete',
 				text,
 				author: attrs?.['@_w:author'] || 'Unknown',

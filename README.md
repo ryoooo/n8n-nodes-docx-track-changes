@@ -12,8 +12,11 @@ Perfect for automating document review workflows, contract management, and appro
 
 ## Features
 
-- **Extract Revisions** - Get all tracked changes (insertions and deletions) with author and timestamp
+- **Extract Revisions** - Get all tracked changes (insertions and deletions) with author, timestamp, and unique ID
 - **Extract Comments** - Get all comments with replies, resolution status, and target text
+- **Accept Revisions** - Accept specific revisions by ID or accept all at once
+- **Reject Revisions** - Reject specific revisions by ID or reject all at once
+- **Get Stats** - Get combined revision and comment statistics with optional author breakdown
 - **Context Support** - Include surrounding text for each revision
 - **Summary Statistics** - Get counts by type, author, and status
 - **AI Agent Compatible** - Use as a tool in AI workflows (`usableAsTool: true`)
@@ -120,6 +123,7 @@ Extracts tracked changes (insertions and deletions) from a DOCX file.
 {
   "revisions": [
     {
+      "id": "123456789",
       "type": "insert",
       "text": "新しい条項",
       "author": "田中 太郎",
@@ -131,6 +135,7 @@ Extracts tracked changes (insertions and deletions) from a DOCX file.
       }
     },
     {
+      "id": "123456790",
       "type": "delete",
       "text": "旧条項",
       "author": "田中 太郎",
@@ -190,6 +195,95 @@ Extracts comments and replies from a DOCX file.
 }
 ```
 
+### Accept Revisions
+
+Accepts tracked changes by ID or accepts all revisions at once. Outputs a modified DOCX file.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| Input Binary Field | string | `data` | Binary property containing the DOCX file |
+| Accept All | boolean | `false` | Accept all revisions instead of specific IDs |
+| Revision IDs | string[] | `[]` | IDs of revisions to accept (from Extract Revisions) |
+| Output Binary Field | string | `data` | Binary property for the modified DOCX |
+
+**Output Example:**
+
+```json
+{
+  "acceptedCount": 3,
+  "acceptedIds": ["123456789", "123456790", "123456791"],
+  "warningIds": []
+}
+```
+
+The modified DOCX file is available in the specified binary output field.
+
+### Reject Revisions
+
+Rejects tracked changes by ID or rejects all revisions at once. Outputs a modified DOCX file.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| Input Binary Field | string | `data` | Binary property containing the DOCX file |
+| Reject All | boolean | `false` | Reject all revisions instead of specific IDs |
+| Revision IDs | string[] | `[]` | IDs of revisions to reject (from Extract Revisions) |
+| Output Binary Field | string | `data` | Binary property for the modified DOCX |
+
+**Output Example:**
+
+```json
+{
+  "rejectedCount": 2,
+  "rejectedIds": ["123456792", "123456793"],
+  "warningIds": ["999999999"]
+}
+```
+
+> **Note:** `warningIds` contains IDs that were not found in the document.
+
+### Get Stats
+
+Gets combined revision and comment statistics from a DOCX file.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| Input Binary Field | string | `data` | Binary property containing the DOCX file |
+| Include Author Breakdown | boolean | `false` | Include per-author statistics |
+
+**Output Example:**
+
+```json
+{
+  "revisions": {
+    "total": 15,
+    "insertions": 12,
+    "deletions": 3,
+    "authors": ["田中 太郎", "鈴木 花子"]
+  },
+  "comments": {
+    "total": 5,
+    "replies": 3,
+    "resolved": 2,
+    "unresolved": 3,
+    "authors": ["田中 太郎", "鈴木 花子"]
+  },
+  "authorBreakdown": [
+    {
+      "author": "田中 太郎",
+      "insertions": 8,
+      "deletions": 2,
+      "comments": 3
+    },
+    {
+      "author": "鈴木 花子",
+      "insertions": 4,
+      "deletions": 1,
+      "comments": 5
+    }
+  ]
+}
+```
+
 ## Usage Examples
 
 ### Basic Workflow
@@ -218,6 +312,14 @@ Track all contract changes in a spreadsheet for audit purposes.
 ```
 
 Automatically collect unresolved comments from shared documents.
+
+### Automated Revision Approval
+
+```
+[Webhook] → [DOCX Revisions (Extract Revisions)] → [Code (Filter by author)] → [DOCX Revisions (Accept Revisions)] → [Google Drive]
+```
+
+Automatically accept revisions from trusted authors and save the cleaned document.
 
 ## Development
 

@@ -24,7 +24,7 @@ describe('revisionParser', () => {
 				<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 					<w:body>
 						<w:p>
-							<w:ins w:author="John Doe" w:date="2024-01-15T10:30:00Z">
+							<w:ins w:id="1" w:author="John Doe" w:date="2024-01-15T10:30:00Z">
 								<w:r>
 									<w:t>inserted text</w:t>
 								</w:r>
@@ -35,6 +35,7 @@ describe('revisionParser', () => {
 
 			const revisions = parseRevisions(xml);
 			expect(revisions).toHaveLength(1);
+			expect(revisions[0].id).toBe('1');
 			expect(revisions[0].type).toBe('insert');
 			expect(revisions[0].text).toBe('inserted text');
 			expect(revisions[0].author).toBe('John Doe');
@@ -46,7 +47,7 @@ describe('revisionParser', () => {
 				<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 					<w:body>
 						<w:p>
-							<w:del w:author="Jane Smith" w:date="2024-01-16T14:00:00Z">
+							<w:del w:id="2" w:author="Jane Smith" w:date="2024-01-16T14:00:00Z">
 								<w:r>
 									<w:delText>deleted text</w:delText>
 								</w:r>
@@ -57,6 +58,7 @@ describe('revisionParser', () => {
 
 			const revisions = parseRevisions(xml);
 			expect(revisions).toHaveLength(1);
+			expect(revisions[0].id).toBe('2');
 			expect(revisions[0].type).toBe('delete');
 			expect(revisions[0].text).toBe('deleted text');
 			expect(revisions[0].author).toBe('Jane Smith');
@@ -68,17 +70,17 @@ describe('revisionParser', () => {
 				<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 					<w:body>
 						<w:p>
-							<w:ins w:author="Author1" w:date="2024-01-01T00:00:00Z">
+							<w:ins w:id="10" w:author="Author1" w:date="2024-01-01T00:00:00Z">
 								<w:r><w:t>first insert</w:t></w:r>
 							</w:ins>
 						</w:p>
 						<w:p>
-							<w:del w:author="Author2" w:date="2024-01-02T00:00:00Z">
+							<w:del w:id="11" w:author="Author2" w:date="2024-01-02T00:00:00Z">
 								<w:r><w:delText>first delete</w:delText></w:r>
 							</w:del>
 						</w:p>
 						<w:p>
-							<w:ins w:author="Author1" w:date="2024-01-03T00:00:00Z">
+							<w:ins w:id="12" w:author="Author1" w:date="2024-01-03T00:00:00Z">
 								<w:r><w:t>second insert</w:t></w:r>
 							</w:ins>
 						</w:p>
@@ -88,14 +90,17 @@ describe('revisionParser', () => {
 			const revisions = parseRevisions(xml);
 			expect(revisions).toHaveLength(3);
 
+			expect(revisions[0].id).toBe('10');
 			expect(revisions[0].type).toBe('insert');
 			expect(revisions[0].text).toBe('first insert');
 			expect(revisions[0].paragraphIndex).toBe(0);
 
+			expect(revisions[1].id).toBe('11');
 			expect(revisions[1].type).toBe('delete');
 			expect(revisions[1].text).toBe('first delete');
 			expect(revisions[1].paragraphIndex).toBe(1);
 
+			expect(revisions[2].id).toBe('12');
 			expect(revisions[2].type).toBe('insert');
 			expect(revisions[2].text).toBe('second insert');
 			expect(revisions[2].paragraphIndex).toBe(2);
@@ -184,9 +189,9 @@ describe('revisionParser', () => {
 
 		it('should count insertions and deletions correctly', () => {
 			const revisions: Revision[] = [
-				{ type: 'insert', text: 'a', author: 'A', date: '', paragraphIndex: 0, context: null },
-				{ type: 'insert', text: 'b', author: 'A', date: '', paragraphIndex: 0, context: null },
-				{ type: 'delete', text: 'c', author: 'B', date: '', paragraphIndex: 0, context: null },
+				{ id: '1', type: 'insert', text: 'a', author: 'A', date: '', paragraphIndex: 0, context: null },
+				{ id: '2', type: 'insert', text: 'b', author: 'A', date: '', paragraphIndex: 0, context: null },
+				{ id: '3', type: 'delete', text: 'c', author: 'B', date: '', paragraphIndex: 0, context: null },
 			];
 
 			const summary = generateRevisionSummary(revisions);
@@ -197,9 +202,9 @@ describe('revisionParser', () => {
 
 		it('should collect unique authors', () => {
 			const revisions: Revision[] = [
-				{ type: 'insert', text: 'a', author: 'Alice', date: '', paragraphIndex: 0, context: null },
-				{ type: 'insert', text: 'b', author: 'Bob', date: '', paragraphIndex: 0, context: null },
-				{ type: 'delete', text: 'c', author: 'Alice', date: '', paragraphIndex: 0, context: null },
+				{ id: '1', type: 'insert', text: 'a', author: 'Alice', date: '', paragraphIndex: 0, context: null },
+				{ id: '2', type: 'insert', text: 'b', author: 'Bob', date: '', paragraphIndex: 0, context: null },
+				{ id: '3', type: 'delete', text: 'c', author: 'Alice', date: '', paragraphIndex: 0, context: null },
 			];
 
 			const summary = generateRevisionSummary(revisions);
